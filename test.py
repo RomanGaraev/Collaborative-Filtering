@@ -1,3 +1,8 @@
+"""
+Get prediction for some particular user.
+Top-10 prediction by the both algorithms and difference between real and predicted ratings are given
+"""
+from sklearn.metrics import mean_squared_error as MSE
 from DLModel import load, RecommenderNet
 from BasicModel import Sparse
 from os.path import join
@@ -20,12 +25,12 @@ if __name__ == "__main__":
     dl_pred = dl_model.predict(index)
     print(dl_pred[:10])
 
+    # Create DataFrame with real ratings in test data set and predictions
     test_frame = test_frame[test_frame['userId'] == 1]
     id = test_frame['movieId'].values
     rating = test_frame['rating'].values
     basic_pred = [pair[1] for pair in basic_pred if pair[0] in id]
     dl_pred = [pair[1] for pair in dl_pred if pair[0] in id]
-    print(f"Ratings for {index} user")
-    print("Real ratings on test set: ", rating)
-    print("Prediction of basic model for the same movies:", basic_pred)
-    print("Prediction of DL model for the same movies:", dl_pred)
+    print(pd.DataFrame(data={"Movie":id, "Real":rating, "Basic": basic_pred, "Deep": dl_pred}))
+    print(f"MSE of basic method: {MSE(basic_pred, rating)}")
+    print(f"MSE of DL method: {MSE(dl_pred, rating)}")

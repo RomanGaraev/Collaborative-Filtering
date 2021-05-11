@@ -1,9 +1,12 @@
+"""
+Invoke of DLModel and BasicModel methods. Result will be saved
+"""
 from DLModel import load, RecommenderNet
+import matplotlib.pyplot as plt
 from BasicModel import Sparse
 from os.path import join
-import pandas as pd
-import matplotlib.pyplot as plt
 from numpy import log
+import pandas as pd
 
 
 def plot(errors, title):
